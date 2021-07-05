@@ -1,0 +1,76 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+class TodoList{
+    - main()
+    - start()
+}
+
+class TodoList_Controller{
+    + List: List<Todo_List>
+    + location: URL
+    + recourses: ResourceBundle
+    + file: File
+    + operator: String
+    + resultDisplay: TextField
+    + actionEvent: ActionEvent
+
+    - Initialize(location,recourses)
+    - FileSaveClicked(ActionEvent)
+    - FilePrint(file,List)
+    - FileLoadClicked(ActionEvent)
+    - ParseData(file)
+    - ListSelectedMouse(ActionEvent)
+    - ViewButtonClicked(ActionEvent)
+    - EditButtonClicked(ActionEvent)
+    - AddButtonClicked(ActionEvent)
+    - RemoveButtonClicked(ActionEvent)
+    - ItemSelectedMouse(ActionEvent)
+    - DisplayAllButtonClicked(ActionEvent)
+    - DisplayIncompleteButtonClicked(ActionEvent)
+    - DisplayCompletedButtonClicked(ActionEvent)
+    - AddItemButtonClicked(ActionEvent)
+    - RemoveButtonClicked(ActionEvent)
+    - CancelButtonClicked(ActionEvent)
+    - FinishButtonClicked(ActionEvent)
+    - SaveButtonClicked(ActionEvent)
+    - ChangeTitleCell()
+    - ChangeDescriptionCell()
+    - ChangeDueDateCell()
+    - ChangeStatusCell()
+}
+
+class Todo_List{
+    + name: String
+    + Items: List
+
+    - Todo_list(name,items)
+    - getName()
+    - getItems()
+    - setName()
+    - setItems()
+}
+class Todo_Item{
+    + name: String
+    + description: String
+    + due_date: String
+    + status: String
+
+    - Todo_item(name,description,due_date,status)
+    - getName()
+    - getDescription()
+    - getDueDate()
+    - getStatus()
+    - setName(name)
+    - setDescription(description)
+    - setDueDate(due_date)
+    - setStatus(status)
+}
+
+java.fx <|-- TodoList
+
+TodoList_Controller o--> Todo_List
+Todo_List o--> Todo_Item
+
+TodoList - TodoList_Controller
+@enduml

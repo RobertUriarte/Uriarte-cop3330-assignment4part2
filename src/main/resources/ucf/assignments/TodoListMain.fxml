@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.SeparatorMenuItem?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToolBar?>
+<?import javafx.scene.layout.AnchorPane?>
+
+
+<AnchorPane prefHeight="602.0" prefWidth="907.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ucf.assignments.TodoList_Controller">
+   <children>
+      <ToolBar prefHeight="62.0" prefWidth="907.0">
+         <items>
+            <MenuButton mnemonicParsing="false" text="File">
+              <items>
+                <MenuItem mnemonicParsing="false" onAction="#FileLoadClicked" text="Load" />
+                  <SeparatorMenuItem mnemonicParsing="false" />
+                <MenuItem mnemonicParsing="false" onAction="#FileSaveClicked" text="Save" />
+              </items>
+            </MenuButton>
+            <Button mnemonicParsing="false" onAction="#ViewButtonClicked" text="View" />
+            <Button mnemonicParsing="false" onAction="#EditButtonClicked" text="Edit" />
+            <Button mnemonicParsing="false" onAction="#AddButtonClicked" text="Add" />
+            <Button mnemonicParsing="false" onAction="#RemoveButtonClicked" text="Remove" />
+            <TextField prefHeight="26.0" prefWidth="634.0" />
+         </items>
+      </ToolBar>
+      <ListView layoutX="-1.0" layoutY="71.0" onMousePressed="#ListSelectedMouse" prefHeight="529.0" prefWidth="907.0" />
+   </children>
+</AnchorPane>
