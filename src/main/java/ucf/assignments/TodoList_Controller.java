@@ -119,6 +119,8 @@ public class TodoList_Controller implements Initializable {
     @FXML
     public void RemoveButtonClicked(ActionEvent actionEvent) {
         //Remove the selected list using the index
+        ListofTodoLists.remove(selectedIndex);
+        ListNames.remove(selectedIndex);
     }
 
     @FXML
