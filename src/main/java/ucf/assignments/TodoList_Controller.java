@@ -5,6 +5,7 @@
 package ucf.assignments;
 
 import com.sun.tools.javac.Main;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -15,35 +16,48 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Dialog;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDate;
+import java.time.Month;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 public class TodoList_Controller implements Initializable {
-    public ListView MainListView;
-    public TextField SearchBar;
-    public int selectedIndex;
-
-    public List<Todo_List> ListofTodoLists = new ArrayList<>();
-    public List<String> names = new ArrayList<>();
-    public final ObservableList<String> ListNames = FXCollections.observableList(names);
-
+    @FXML private TableView<Todo_Item> tableView;
+    @FXML private TableColumn<Todo_Item, String> title;
+    @FXML private TableColumn<Todo_Item, String> description;
+    @FXML private TableColumn<Todo_Item, LocalDate> due_date;
     //Initialize Empty List<Todo_list>
 
     //Initialize file chooser
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         //Set file chooser to a specific directory
+        title.setCellValueFactory(new PropertyValueFactory<Todo_Item,String>("title"));
+        description.setCellValueFactory(new PropertyValueFactory<Todo_Item,String>("description"));
+        due_date.setCellValueFactory(new PropertyValueFactory<Todo_Item,LocalDate>("due_date"));
+
+        tableView.setItems(getSample());
+
+        tableView.setEditable(true);
+        title.setCellFactory(TextFieldTableCell.forTableColumn());
+        description.setCellFactory(TextFieldTableCell.forTableColumn());
+    }
+
+    public ObservableList<Todo_Item> getSample(){
+        ObservableList<Todo_Item> new_item = FXCollections.observableArrayList();
+        new_item.add(new Todo_Item("Dogs","Buy dog food",LocalDate.of(2021,Month.JANUARY,1)));
+        return new_item;
     }
 
     @FXML
@@ -78,14 +92,10 @@ public class TodoList_Controller implements Initializable {
         //Get index of selected list
         //Set the text bar to list name selected
         //return value of text bar
-
-        String selectedList = MainListView.getSelectionModel().getSelectedItem().toString();
-        selectedIndex = MainListView.getSelectionModel().getSelectedIndex();
-        SearchBar.setText(selectedList);
     }
 
     @FXML
-    public void ViewButtonClicked(ActionEvent actionEvent) {
+    public void ViewButtonClicked(ActionEvent actionEvent) throws IOException {
         //Get the index of the list selected
         //Create a new parent for the ItemsView Scene
         //Create a new scene for ItemsView scene
@@ -99,9 +109,7 @@ public class TodoList_Controller implements Initializable {
         //Get the text in the text bar/User input for the new name
         //Set the name of the current list with the new name
         //Display updated values
-        ListNames.set(selectedIndex,SearchBar.getText());
-        ListofTodoLists.get(selectedIndex).setName(SearchBar.getText());
-        SearchBar.clear();
+
     }
 
     @FXML
@@ -110,17 +118,12 @@ public class TodoList_Controller implements Initializable {
         //Create a new empty list with name in text bar
         //Add new list to List of lists
         //Display updated List of lists
-        ListofTodoLists.add(new Todo_List(SearchBar.getText(),null));
-        ListNames.add((SearchBar.getText()));
-        MainListView.setItems(ListNames);
-        SearchBar.clear();
+
     }
 
     @FXML
     public void RemoveButtonClicked(ActionEvent actionEvent) {
         //Remove the selected list using the index
-        ListofTodoLists.remove(selectedIndex);
-        ListNames.remove(selectedIndex);
     }
 
     @FXML
@@ -134,12 +137,6 @@ public class TodoList_Controller implements Initializable {
         //Create a new scene for Main scene
         //Get the current stage we are on
         //Set the current stage to the Main scene
-
-        Parent main = FXMLLoader.load(getClass().getResource("TodoListMain.FXML"));
-        Scene listviewScene = new Scene(main);
-        Stage window = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();
-        window.setScene(listviewScene);
-        window.show();
     }
 
     @FXML
@@ -162,7 +159,7 @@ public class TodoList_Controller implements Initializable {
     }
 
     @FXML
-    public void AddItemButtonClicked(ActionEvent actionEvent) {
+    public void AddItemButtonClicked(ActionEvent actionEvent) throws IOException {
         //Create a new parent for the AddNewItem Scene
         //Create a new scene for AddNewItem scene
         //Create an Item with blank values
@@ -170,6 +167,7 @@ public class TodoList_Controller implements Initializable {
         //Add new item to current List
         //Get the current stage we are on
         //Set the current stage to the AddNewItem scene
+
     }
 
     @FXML
@@ -187,11 +185,12 @@ public class TodoList_Controller implements Initializable {
     }
 
     @FXML
-    public void CancelButtonClicked(ActionEvent actionEvent) {
+    public void CancelButtonClicked(ActionEvent actionEvent) throws IOException {
         //Create a new parent for the ItemsView Scene
         //Create a new scene for ItemsView scene
         //Get the current stage we are on
         //Set the current stage to the ItemsView scene
+
     }
 
     @FXML
@@ -206,21 +205,27 @@ public class TodoList_Controller implements Initializable {
     }
 
     @FXML
-    public void ChangeTitleCell(){
+    public void ChangeTitleCell(TableColumn.CellEditEvent newCell){
         //Get the selected cell
         //Set cell to editable
         //Get user input from cell value
         //Set the Title cell to new user input
         //Update the Title string value of our item
+
+        Todo_Item item_selected = tableView.getSelectionModel().getSelectedItem();
+        item_selected.setTitle(newCell.getNewValue().toString());
     }
 
     @FXML
-    public void ChangeDescriptionCell(){
+    public void ChangeDescriptionCell(TableColumn.CellEditEvent newCell){
         //Get the selected cell
         //Set cell to editable
         //Get user input from cell value
         //Set the description cell to new user input
         //Update the Description string value of our item
+
+        Todo_Item item_selected = tableView.getSelectionModel().getSelectedItem();
+        item_selected.setDescription(newCell.getNewValue().toString());
     }
 
     @FXML

@@ -13,6 +13,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.Objects;
 
 public class TodoList extends Application {
     public static void main(String[] args) {
@@ -22,12 +23,11 @@ public class TodoList extends Application {
     @Override
     public void start(Stage primaryStage){
         try {
-            Parent root = FXMLLoader.load(getClass().getResource("TodoListMain.fxml"));
+            Parent root = FXMLLoader.load((Objects.requireNonNull(getClass().getResource("TodoList_Main.fxml"))));
             Scene scene = new Scene(root);
             primaryStage.setScene(scene);
             primaryStage.setTitle("Todo List");
             primaryStage.show();
-            final ObservableList<Todo_List> TodoLists = FXCollections.observableArrayList();
         } catch (IOException e) {
             e.printStackTrace();
         }
