@@ -4,17 +4,36 @@
  */
 package ucf.assignments;
 
+import com.sun.tools.javac.Main;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.ListView;
+import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
+import javafx.stage.Stage;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
 public class TodoList_Controller implements Initializable {
+    public ListView MainListView;
 
+    public TextField SearchBar;
+    public List<Todo_List> ListofTodoList7 = new ArrayList<Todo_List>();
+    public List<String> names = new ArrayList<String>();
+    public final ObservableList<String> ListofTodoList = FXCollections.observableList(names);
     //Initialize Empty List<Todo_list>
 
     //Initialize file chooser
@@ -50,11 +69,15 @@ public class TodoList_Controller implements Initializable {
     }
 
     @FXML
-    public void ListSelectedMouse(ActionEvent actionEvent){
+    public void ListSelectedMouse(MouseEvent arg0){
         //Store list name in string
         //Get index of selected list
         //Set the text bar to list name selected
         //return value of text bar
+
+        String selectedList = MainListView.getSelectionModel().getSelectedItem().toString();
+        int selectedIndex = MainListView.getSelectionModel().getSelectedIndex();
+        SearchBar.setText(selectedList);
     }
 
     @FXML
@@ -80,6 +103,10 @@ public class TodoList_Controller implements Initializable {
         //Create a new empty list with name in text bar
         //Add new list to List of lists
         //Display updated List of lists
+
+        ListofTodoList.add(SearchBar.getText());
+        MainListView.setItems(ListofTodoList);
+        SearchBar.clear();
     }
 
     @FXML
@@ -93,11 +120,17 @@ public class TodoList_Controller implements Initializable {
     }
 
     @FXML
-    public void BackButtonPushed(ActionEvent actionEvent) {
+    public void BackButtonPushed(ActionEvent actionEvent) throws IOException {
         //Create a new parent for the Main Scene
         //Create a new scene for Main scene
         //Get the current stage we are on
         //Set the current stage to the Main scene
+
+        Parent main = FXMLLoader.load(getClass().getResource("TodoListMain.FXML"));
+        Scene listviewScene = new Scene(main);
+        Stage window = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();
+        window.setScene(listviewScene);
+        window.show();
     }
 
     @FXML
