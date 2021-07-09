@@ -15,6 +15,8 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Dialog;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
@@ -29,11 +31,13 @@ import java.util.ResourceBundle;
 
 public class TodoList_Controller implements Initializable {
     public ListView MainListView;
-
     public TextField SearchBar;
-    public List<Todo_List> ListofTodoList7 = new ArrayList<Todo_List>();
-    public List<String> names = new ArrayList<String>();
-    public final ObservableList<String> ListofTodoList = FXCollections.observableList(names);
+    public int selectedIndex;
+
+    public List<Todo_List> ListofTodoLists = new ArrayList<>();
+    public List<String> names = new ArrayList<>();
+    public final ObservableList<String> ListNames = FXCollections.observableList(names);
+
     //Initialize Empty List<Todo_list>
 
     //Initialize file chooser
@@ -76,7 +80,7 @@ public class TodoList_Controller implements Initializable {
         //return value of text bar
 
         String selectedList = MainListView.getSelectionModel().getSelectedItem().toString();
-        int selectedIndex = MainListView.getSelectionModel().getSelectedIndex();
+        selectedIndex = MainListView.getSelectionModel().getSelectedIndex();
         SearchBar.setText(selectedList);
     }
 
@@ -95,6 +99,9 @@ public class TodoList_Controller implements Initializable {
         //Get the text in the text bar/User input for the new name
         //Set the name of the current list with the new name
         //Display updated values
+        ListNames.set(selectedIndex,SearchBar.getText());
+        ListofTodoLists.get(selectedIndex).setName(SearchBar.getText());
+        SearchBar.clear();
     }
 
     @FXML
@@ -103,9 +110,9 @@ public class TodoList_Controller implements Initializable {
         //Create a new empty list with name in text bar
         //Add new list to List of lists
         //Display updated List of lists
-
-        ListofTodoList.add(SearchBar.getText());
-        MainListView.setItems(ListofTodoList);
+        ListofTodoLists.add(new Todo_List(SearchBar.getText(),null));
+        ListNames.add((SearchBar.getText()));
+        MainListView.setItems(ListNames);
         SearchBar.clear();
     }
 
