@@ -17,8 +17,8 @@
         <columns>
           <TableColumn fx:id="title" onEditCommit="#ChangeTitleCell" prefWidth="152.79999387264252" text="Title" />
           <TableColumn fx:id="description" onEditCommit="#ChangeDescriptionCell" prefWidth="209.5999755859375" text="Description" />
-            <TableColumn fx:id="due_date" minWidth="0.0" onEditCommit="#ChangeDueDateCell" prefWidth="157.60000610351562" text="Due Date" />
-            <TableColumn fx:id="status" onEditCommit="#ChangeStatusCell" prefWidth="81.60003662109375" text="Status" />
+            <TableColumn fx:id="date" onEditCommit="#ChangeDateCell" prefWidth="165.60000610351562" text="Due Date" />
+            <TableColumn fx:id="status" minWidth="4.0" onEditCommit="#ChangeStatusCell" prefWidth="71.20001220703125" text="Status" />
         </columns>
       </TableView>
       <ToolBar prefHeight="40.0" prefWidth="600.0">
@@ -40,8 +40,8 @@
       </ToolBar>
       <TextField fx:id="titleTextField" layoutX="6.0" layoutY="54.0" prefHeight="26.0" prefWidth="123.0" promptText="Title" />
       <TextField fx:id="descriptionTextField" layoutX="136.0" layoutY="53.0" prefHeight="26.0" prefWidth="158.0" promptText="Description" />
-      <DatePicker fx:id="dueDatePicker" layoutX="300.0" layoutY="53.0" prefHeight="26.0" prefWidth="176.0" promptText="Due Date" />
       <Button layoutX="544.0" layoutY="53.0" mnemonicParsing="false" onAction="#AddItemButtonClicked" prefHeight="26.0" prefWidth="41.0" text="Add" />
       <TextField fx:id="statusTextField" layoutX="486.0" layoutY="54.0" prefHeight="26.0" prefWidth="50.0" promptText="I/C" />
+      <DatePicker fx:id="dateTextField" layoutX="310.0" layoutY="55.0" prefHeight="26.0" prefWidth="158.0" promptText="Due Date" />
    </children>
 </AnchorPane>

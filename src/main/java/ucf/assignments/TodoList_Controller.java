@@ -17,8 +17,10 @@ import javafx.scene.control.cell.TextFieldTableCell;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class TodoList_Controller implements Initializable {
@@ -29,7 +31,7 @@ public class TodoList_Controller implements Initializable {
     @FXML
     private TableColumn<Todo_Item, String> description;
     @FXML
-    private TableColumn<Todo_Item, LocalDate> due_date;
+    private TableColumn<Todo_Item, String> date;
     @FXML
     private TableColumn<Todo_Item, String> status;
 
@@ -40,7 +42,7 @@ public class TodoList_Controller implements Initializable {
     @FXML
     private TextField descriptionTextField;
     @FXML
-    private DatePicker dueDatePicker;
+    private DatePicker dateTextField;
     @FXML
     private TextField statusTextField;
 
@@ -52,7 +54,7 @@ public class TodoList_Controller implements Initializable {
         //Set file chooser to a specific directory
         title.setCellValueFactory(new PropertyValueFactory<>("title"));
         description.setCellValueFactory(new PropertyValueFactory<>("description"));
-        due_date.setCellValueFactory(new PropertyValueFactory<>("due_date"));
+        date.setCellValueFactory(new PropertyValueFactory<>("date"));
         status.setCellValueFactory(new PropertyValueFactory<>("status"));
 
         tableView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
@@ -62,11 +64,12 @@ public class TodoList_Controller implements Initializable {
 
         title.setCellFactory(TextFieldTableCell.forTableColumn());
         description.setCellFactory(TextFieldTableCell.forTableColumn());
+        date.setCellFactory(TextFieldTableCell.forTableColumn());
         status.setCellFactory(TextFieldTableCell.forTableColumn());
 
     }
 
-    public void FilePrint(File file, List<Todo_List> list) {
+    public void FilePrint(File file, List<Todo_Item> list) {
         //Use print writer to print list data to our new file
         //Close file
     }
@@ -130,8 +133,15 @@ public class TodoList_Controller implements Initializable {
         //Get the current stage we are on
         //Set the current stage to the AddNewItem scene
 
-        Todo_Item new_item = new Todo_Item(titleTextField.getText(), descriptionTextField.getText(), dueDatePicker.getValue(), statusTextField.getText());
+        Todo_Item new_item = new Todo_Item(titleTextField.getText(), descriptionTextField.getText(), format_date(), statusTextField.getText());
+        tableView.setItems(item_list);
         tableView.getItems().add(new_item);
+    }
+
+    public String format_date(){
+        LocalDate localDate = LocalDate.now();//For reference
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        return dateTextField.getValue().format(formatter);
     }
 
     @FXML
@@ -141,6 +151,7 @@ public class TodoList_Controller implements Initializable {
         //Display new tableview with removed item
 
         ObservableList<Todo_Item> selectedRows, allItems;
+        tableView.setItems(item_list);
         allItems = tableView.getItems();
         selectedRows = tableView.getSelectionModel().getSelectedItems();
         if(selectedRows != null)
@@ -151,6 +162,7 @@ public class TodoList_Controller implements Initializable {
     @FXML
     public void ClearAllButtonClicked(ActionEvent actionEvent) {
         ObservableList<Todo_Item> allItems, all;
+        tableView.setItems(item_list);
         allItems = tableView.getItems();
         all = tableView.getItems();
         allItems.removeAll(all);
@@ -198,19 +210,27 @@ public class TodoList_Controller implements Initializable {
     }
 
     @FXML
-    public void ChangeDueDateCell(TableColumn.CellEditEvent newCell) {
+    public void ChangeDateCell(TableColumn.CellEditEvent newCell) {
         //Get the selected cell
         //Set cell to editable
         //Get user input from cell value
-        //Set the DueDate cell to new user input
-        //Checks if user input is in YYY-MM-DD format
-        //If input is not in correct format, input is changed to correct format
-        //Update the Due Date string value of our item
-        //Note: Date picker in Scene builder could be used here as alternative
+        //Set the status cell to new user input
+        //Update the Status string value of our item
 
         Todo_Item item_selected = tableView.getSelectionModel().getSelectedItem();
-        item_selected.setDue_date((LocalDate) newCell.getNewValue());
+        if(is_date_valid(newCell.getNewValue().toString()))
+            item_selected.setDate(newCell.getNewValue().toString());
+    }
 
+    public boolean is_date_valid(String user_date){
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        dateFormat.setLenient(false);
+        try {
+            dateFormat.parse(user_date.trim());
+        } catch (ParseException pe) {
+            return false;
+        }
+        return true;
     }
 
     @FXML
