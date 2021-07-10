@@ -14,6 +14,8 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
+
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -84,12 +86,7 @@ public class TodoList_Controller implements Initializable {
 
         FilteredList<Todo_Item> items = new FilteredList<>(item_list,b -> true);
         items.setPredicate(Todo_Item -> {
-            if(Todo_Item.getStatus().equals("I") || Todo_Item.getStatus().equals("i")){
-                return true;
-            }
-            else{
-                return false;
-            }
+            return Todo_Item.getStatus().equals("I") || Todo_Item.getStatus().equals("i");
         });
         tableView.setItems(items);
     }
@@ -101,18 +98,13 @@ public class TodoList_Controller implements Initializable {
         //Set the tableview values to the newly created Incomplete items list
         FilteredList<Todo_Item> items = new FilteredList<>(item_list,b -> true);
         items.setPredicate(Todo_Item -> {
-            if(Todo_Item.getStatus().equals("C") || Todo_Item.getStatus().equals("c")){
-                return true;
-            }
-            else{
-                return false;
-            }
+            return Todo_Item.getStatus().equals("C") || Todo_Item.getStatus().equals("c");
         });
         tableView.setItems(items);
     }
 
     @FXML
-    public void AddItemButtonClicked(ActionEvent actionEvent) throws IOException {
+    public void AddItemButtonClicked(ActionEvent actionEvent){
         //Create a new parent for the AddNewItem Scene
         //Create a new scene for AddNewItem scene
         //Create an Item with blank values
@@ -161,9 +153,15 @@ public class TodoList_Controller implements Initializable {
         //Initialize a file to be saved
         //Get all our items from current list to be saved
         //Call FilePrint() function
-
+        tableView.setItems(item_list);
         ExcelExport<Todo_Item> exporter = new ExcelExport<>();
         exporter.export(tableView);
+    }
+
+    @FXML
+    public void LoadButtonClicked(ActionEvent actionEvent){
+        tableView.setItems(item_list);
+        ParseJson.parse(tableView);
     }
 
 
