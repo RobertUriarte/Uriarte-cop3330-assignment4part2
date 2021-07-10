@@ -13,16 +13,18 @@
 
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ucf.assignments.TodoList_Controller">
    <children>
-      <TableView fx:id="tableView" layoutX="-2.0" layoutY="104.0" onContextMenuRequested="#ItemSelectedMouse" prefHeight="294.0" prefWidth="600.0">
+      <TableView fx:id="tableView" layoutX="-2.0" layoutY="104.0" prefHeight="294.0" prefWidth="600.0">
         <columns>
-          <TableColumn fx:id="title" onEditCommit="#ChangeTitleCell" prefWidth="179.20001220703125" text="Title" />
-          <TableColumn fx:id="description" onEditCommit="#ChangeDescriptionCell" prefWidth="221.59996032714844" text="Description" />
-            <TableColumn fx:id="due_date" onEditCommit="#ChangeDueDateCell" prefWidth="187.20001220703125" text="Due Date" />
+          <TableColumn fx:id="title" onEditCommit="#ChangeTitleCell" prefWidth="152.79999387264252" text="Title" />
+          <TableColumn fx:id="description" onEditCommit="#ChangeDescriptionCell" prefWidth="209.5999755859375" text="Description" />
+            <TableColumn fx:id="due_date" minWidth="0.0" onEditCommit="#ChangeDueDateCell" prefWidth="157.60000610351562" text="Due Date" />
+            <TableColumn fx:id="status" onEditCommit="#ChangeStatusCell" prefWidth="81.60003662109375" text="Status" />
         </columns>
       </TableView>
       <ToolBar prefHeight="40.0" prefWidth="600.0">
         <items>
             <Button mnemonicParsing="false" onAction="#SaveButtonClicked" text="Save" />
+            <Button mnemonicParsing="false" text="Load" />
             <MenuButton mnemonicParsing="false" text="Display">
               <items>
                 <MenuItem mnemonicParsing="false" onAction="#DisplayAllButtonClicked" text="All" />
@@ -33,11 +35,13 @@
               </items>
             </MenuButton>
             <Button mnemonicParsing="false" onAction="#RemoveItemButtonClicked" text="Remove" />
+            <Button mnemonicParsing="false" onAction="#ClearAllButtonClicked" text="Clear All" />
         </items>
       </ToolBar>
-      <TextField fx:id="titleTextField" layoutX="14.0" layoutY="54.0" promptText="Title" />
-      <TextField fx:id="descriptionTextField" layoutX="175.0" layoutY="54.0" promptText="Description" />
-      <DatePicker fx:id="dueDatePicker" layoutX="335.0" layoutY="54.0" promptText="Due Date" />
-      <Button layoutX="525.0" layoutY="54.0" mnemonicParsing="false" onAction="#AddItemButtonClicked" text="Add" />
+      <TextField fx:id="titleTextField" layoutX="6.0" layoutY="54.0" prefHeight="26.0" prefWidth="123.0" promptText="Title" />
+      <TextField fx:id="descriptionTextField" layoutX="136.0" layoutY="53.0" prefHeight="26.0" prefWidth="158.0" promptText="Description" />
+      <DatePicker fx:id="dueDatePicker" layoutX="300.0" layoutY="53.0" prefHeight="26.0" prefWidth="176.0" promptText="Due Date" />
+      <Button layoutX="544.0" layoutY="53.0" mnemonicParsing="false" onAction="#AddItemButtonClicked" prefHeight="26.0" prefWidth="41.0" text="Add" />
+      <TextField fx:id="statusTextField" layoutX="486.0" layoutY="54.0" prefHeight="26.0" prefWidth="50.0" promptText="I/C" />
    </children>
 </AnchorPane>
