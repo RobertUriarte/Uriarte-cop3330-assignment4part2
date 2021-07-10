@@ -9,17 +9,22 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 public class ExcelExport<Todo_Item> {
+    //Initialize Export Function
     public void export(TableView<Todo_Item> tableView){
+        //Initialize workbook
+        //Initialize sheet
+        //Initialize rows
 
         HSSFWorkbook hssfWorkbook = new HSSFWorkbook();
         HSSFSheet hssfSheet = hssfWorkbook.createSheet("TodoList");
         HSSFRow firstRow = hssfSheet.createRow(0);
 
+        //Loop for number of cells in table
         for (int i=0; i<tableView.getColumns().size();i++){
             firstRow.createCell(i).setCellValue(tableView.getColumns().get(i).getText());
         }
 
-
+        //Loop for number of rows in table
         for (int row=0; row<tableView.getItems().size();row++){
 
             HSSFRow hssfRow= hssfSheet.createRow(row+1);
@@ -41,7 +46,9 @@ public class ExcelExport<Todo_Item> {
 
         }
 
-        //save excel file and close the workbook
+        //Initialize File
+        //Save to excel file
+        //Set up try catch
         try {
             File file = new File("TodoList.xls");
             file.createNewFile(); // if file already exists will do nothing

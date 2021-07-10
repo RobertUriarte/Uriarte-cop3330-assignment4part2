@@ -14,10 +14,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
-import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
-
-import java.io.File;
-import java.io.IOException;
 import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -54,17 +50,22 @@ public class TodoList_Controller implements Initializable {
     //Initialize file chooser
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        //Set file chooser to a specific directory
+        //Initialize cellValueFactory of cells of tableview
         title.setCellValueFactory(new PropertyValueFactory<>("title"));
         description.setCellValueFactory(new PropertyValueFactory<>("description"));
         date.setCellValueFactory(new PropertyValueFactory<>("date"));
         status.setCellValueFactory(new PropertyValueFactory<>("status"));
 
+        //Initialize allowing multiple selection mode
         tableView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+
+        //Set our tableView to empty item list
         tableView.setItems(item_list);
 
+        //Set tableView to be editable
         tableView.setEditable(true);
 
+        //Initialize text fields of cells of tableview
         title.setCellFactory(TextFieldTableCell.forTableColumn());
         description.setCellFactory(TextFieldTableCell.forTableColumn());
         date.setCellFactory(TextFieldTableCell.forTableColumn());
@@ -73,15 +74,16 @@ public class TodoList_Controller implements Initializable {
     }
 
     @FXML
-    public void DisplayAllButtonClicked(ActionEvent actionEvent) {
+    public TableView<Todo_Item> DisplayAllButtonClicked(ActionEvent actionEvent) {
         //Set the tableview to display all items in the List of items of current List
         tableView.setItems(item_list);
+        return tableView;
     }
 
     @FXML
     public void DisplayIncompleteButtonClicked(ActionEvent actionEvent) {
-        //Initialize new list
-        //Copy over the items that don't have their status as "complete" into our new list
+        //Initialize filtered list
+        //set predicates for incomplete list
         //Set the tableview values to the newly created Incomplete items list
 
         FilteredList<Todo_Item> items = new FilteredList<>(item_list,b -> true);
@@ -93,9 +95,10 @@ public class TodoList_Controller implements Initializable {
 
     @FXML
     public void DisplayCompletedButtonClicked(ActionEvent actionEvent) {
-        //Initialize new list
-        //Copy over the items that have their status as "complete" into our new list
-        //Set the tableview values to the newly created Incomplete items list
+        //Initialize filtered list
+        //set predicates for completed list
+        //Set the tableview values to the newly created completed items list
+
         FilteredList<Todo_Item> items = new FilteredList<>(item_list,b -> true);
         items.setPredicate(Todo_Item -> {
             return Todo_Item.getStatus().equals("C") || Todo_Item.getStatus().equals("c");
@@ -105,13 +108,9 @@ public class TodoList_Controller implements Initializable {
 
     @FXML
     public void AddItemButtonClicked(ActionEvent actionEvent){
-        //Create a new parent for the AddNewItem Scene
-        //Create a new scene for AddNewItem scene
-        //Create an Item with blank values
-        //Sets tableview with the single blank item so it can be edited in order to create a new item from user.
-        //Add new item to current List
-        //Get the current stage we are on
-        //Set the current stage to the AddNewItem scene
+        //Create new item with textField values from user input
+        //set tableView back to all items
+        //Add new item to all items
 
         Todo_Item new_item = new Todo_Item(titleTextField.getText(), descriptionTextField.getText(), format_date(), statusTextField.getText());
         tableView.setItems(item_list);
@@ -119,16 +118,20 @@ public class TodoList_Controller implements Initializable {
     }
 
     public String format_date(){
-        LocalDate localDate = LocalDate.now();//For reference
+        //Initialize date formatter
+        //format date in text field
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         return dateTextField.getValue().format(formatter);
     }
 
     @FXML
     public void RemoveItemButtonClicked(ActionEvent actionEvent) {
-        //Gets the index of the item
-        //Removes that item from item list
-        //Display new tableview with removed item
+        //Initialize observable list
+        //Set tableView to all items list
+        //Get all the items currently in list
+        //Get selected rows
+        //Check if there are any selected rows
+        //If there are selected rows, remove them
 
         ObservableList<Todo_Item> selectedRows, allItems;
         tableView.setItems(item_list);
@@ -141,6 +144,11 @@ public class TodoList_Controller implements Initializable {
 
     @FXML
     public void ClearAllButtonClicked(ActionEvent actionEvent) {
+        //Initialize observable list
+        //Set tableView to all items list
+        //Get all the items currently in list
+        //Remove all the items in the tableView
+
         ObservableList<Todo_Item> allItems, all;
         tableView.setItems(item_list);
         allItems = tableView.getItems();
@@ -150,9 +158,10 @@ public class TodoList_Controller implements Initializable {
 
     @FXML
     public void SaveButtonClicked(ActionEvent actionEvent) {
-        //Initialize a file to be saved
-        //Get all our items from current list to be saved
-        //Call FilePrint() function
+        //Set the tableView to all items list
+        //Initialize new ExcelExporter
+        //Call exporter
+
         tableView.setItems(item_list);
         ExcelExport<Todo_Item> exporter = new ExcelExport<>();
         exporter.export(tableView);
@@ -160,6 +169,9 @@ public class TodoList_Controller implements Initializable {
 
     @FXML
     public void LoadButtonClicked(ActionEvent actionEvent){
+        //Set the tableview to all items list
+        //Call Json parser
+
         tableView.setItems(item_list);
         ParseJson.parse(tableView);
     }
@@ -168,10 +180,7 @@ public class TodoList_Controller implements Initializable {
     @FXML
     public void ChangeTitleCell(TableColumn.CellEditEvent newCell) {
         //Get the selected cell
-        //Set cell to editable
-        //Get user input from cell value
-        //Set the Title cell to new user input
-        //Update the Title string value of our item
+        //Set the selected cell to user input
 
         Todo_Item item_selected = tableView.getSelectionModel().getSelectedItem();
         item_selected.setTitle(newCell.getNewValue().toString());
@@ -180,10 +189,11 @@ public class TodoList_Controller implements Initializable {
     @FXML
     public void ChangeDescriptionCell(TableColumn.CellEditEvent newCell) {
         //Get the selected cell
-        //Set cell to editable
-        //Get user input from cell value
-        //Set the description cell to new user input
-        //Update the Description string value of our item
+        //Get user input
+        //Check if user input is within 1-256 range.
+        //If user is above 256 character trim
+        //If user is under 1 do nothing
+        //If user is within range set selected cell to user input
 
         Todo_Item item_selected = tableView.getSelectionModel().getSelectedItem();
         String user_input = newCell.getNewValue().toString();
@@ -201,10 +211,8 @@ public class TodoList_Controller implements Initializable {
     @FXML
     public void ChangeDateCell(TableColumn.CellEditEvent newCell) {
         //Get the selected cell
-        //Set cell to editable
-        //Get user input from cell value
-        //Set the status cell to new user input
-        //Update the Status string value of our item
+        //Check if selected cell is a valid date input
+        //If date is valid we set selected cell to user input
 
         Todo_Item item_selected = tableView.getSelectionModel().getSelectedItem();
         if(is_date_valid(newCell.getNewValue().toString()))
@@ -212,6 +220,10 @@ public class TodoList_Controller implements Initializable {
     }
 
     public boolean is_date_valid(String user_date){
+        //Initialize our date format
+        //Set up try catch
+        //Parse our date
+
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         dateFormat.setLenient(false);
         try {
@@ -225,10 +237,7 @@ public class TodoList_Controller implements Initializable {
     @FXML
     public void ChangeStatusCell(TableColumn.CellEditEvent newCell) {
         //Get the selected cell
-        //Set cell to editable
-        //Get user input from cell value
-        //Set the status cell to new user input
-        //Update the Status string value of our item
+        //Set the selected cell to user input
 
         Todo_Item item_selected = tableView.getSelectionModel().getSelectedItem();
         item_selected.setStatus(newCell.getNewValue().toString());

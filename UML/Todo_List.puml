@@ -7,70 +7,94 @@ class TodoList{
 }
 
 class TodoList_Controller{
-    + List: List<Todo_List>
+    + item_list: ObservableList<Todo_Item>
     + location: URL
     + recourses: ResourceBundle
     + file: File
     + operator: String
     + resultDisplay: TextField
+    + tableView: TableView
+    + title: TableColumn
+    + description: TableColumn
+    + date: TableColumn
+    + status: TableColumn
     + actionEvent: ActionEvent
+    + titleTextField TextField
+    + descriptionTextField TextField
+    + dateTextField TextField
+    + statusTextField TextField
 
     - Initialize(location,recourses)
-    - FileSaveClicked(ActionEvent)
-    - FilePrint(file,List)
-    - FileLoadClicked(ActionEvent)
-    - ParseData(file)
-    - ListSelectedMouse(ActionEvent)
-    - ViewButtonClicked(ActionEvent)
-    - EditButtonClicked(ActionEvent)
-    - AddButtonClicked(ActionEvent)
-    - RemoveButtonClicked(ActionEvent)
-    - ItemSelectedMouse(ActionEvent)
+    - format_date()
     - DisplayAllButtonClicked(ActionEvent)
     - DisplayIncompleteButtonClicked(ActionEvent)
     - DisplayCompletedButtonClicked(ActionEvent)
     - AddItemButtonClicked(ActionEvent)
-    - RemoveButtonClicked(ActionEvent)
-    - CancelButtonClicked(ActionEvent)
-    - FinishButtonClicked(ActionEvent)
+    - RemoveItemButtonClicked(ActionEvent)
+    - ClearAllButtonClicked((ActionEvent)
+    - LoadButtonClicked(ActionEvent))
     - SaveButtonClicked(ActionEvent)
-    - ChangeTitleCell()
-    - ChangeDescriptionCell()
-    - ChangeDueDateCell()
-    - ChangeStatusCell()
+    - ChangeTitleCell(TableColumn.CellEditEvent )
+    - ChangeDescriptionCell(TableColumn.CellEditEvent )
+    - ChangeDateCell(TableColumn.CellEditEvent )
+    - ChangeStatusCell(TableColumn.CellEditEvent )
+    - is_date_valid(String)
 }
 
-class Todo_List{
-    + name: String
-    + Items: List
-
-    - Todo_list(name,items)
-    - getName()
-    - getItems()
-    - setName()
-    - setItems()
-}
 class Todo_Item{
     + name: String
     + description: String
     + due_date: String
     + status: String
 
-    - Todo_item(name,description,due_date,status)
+    - Todo_item(name,description,date,status)
     - getName()
     - getDescription()
-    - getDueDate()
+    - getDate()
     - getStatus()
     - setName(name)
     - setDescription(description)
-    - setDueDate(due_date)
+    - setDate(due_date)
     - setStatus(status)
+}
+
+class ParseJson{
+    + items: ObservableList<Todo_Item>
+    + fileElement: JsonElement
+    + fileObject: JsonObject
+    + jsonArrayofProducts: JsonArray
+    + title: String
+    + description: String
+    + date: String
+    + status: String
+    + item: Todo_Item
+    + json: File
+    + tableView: TableView<Todo_Item>
+
+    - parse(json file)
+}
+
+class ExcelExport{
+    + tableView: TableView<Todo_Item>
+    + hssfWorkbook: HSSFWorkbook
+    + hssfSheet: HSSFSheet
+    + HSSFRow: firstRow
+    + hssfRow: HSSFRow
+    + celValue: Object
+    + file: File
+
+    - export(TableView)
 }
 
 java.fx <|-- TodoList
 
-TodoList_Controller o--> Todo_List
-Todo_List o--> Todo_Item
+TodoList_Controller o--> Todo_Item
+TodoList_Controller o--> ParseJson
+TodoList_Controller o--> ExcelExport
+
+ParseJson o--> Todo_Item
+ExcelExport o--> Todo_Item
+
 
 TodoList - TodoList_Controller
 @enduml

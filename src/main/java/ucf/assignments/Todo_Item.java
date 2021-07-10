@@ -7,7 +7,6 @@ package ucf.assignments;
 
 import javafx.beans.property.SimpleStringProperty;
 
-import java.time.LocalDate;
 
 public class Todo_Item {
     //Set name

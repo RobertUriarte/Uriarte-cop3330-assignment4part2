@@ -17,7 +17,7 @@ import javafx.stage.FileChooser;
 
 public class ParseJson {
     public static void parse(TableView<Todo_Item> tableView) {
-        //Initialize product list
+        //Initialize items
         ObservableList<Todo_Item> items = FXCollections.observableArrayList();
         try {
             FileChooser fileChooser = new FileChooser();
@@ -28,23 +28,23 @@ public class ParseJson {
             //Get file as json object
             JsonObject fileObject = fileElement.getAsJsonObject();
 
-            //Get products from json file
+            //Get items from json file
             JsonArray jsonArrayofItems = fileObject.get("items").getAsJsonArray();
-            //Get product values from json
-            //Loop for number of products
+            //Get item values from json
+            //Loop for number of items
             for(JsonElement productElement : jsonArrayofItems){
                 //Get json product
                 JsonObject productJsonObject = productElement.getAsJsonObject();
 
-                //Get name,price,& quantity
+                //Get values
                 String title = productJsonObject.get("title").getAsString();
                 String description = productJsonObject.get("description").getAsString();
                 String date = productJsonObject.get("date").getAsString();
                 String status = productJsonObject.get("status").getAsString();
 
-                //Create product
+                //Create item
                 Todo_Item item = new Todo_Item(title,description,date,status);
-                //Store product
+                //Add item
                 tableView.getItems().add(item);
             }
         }
