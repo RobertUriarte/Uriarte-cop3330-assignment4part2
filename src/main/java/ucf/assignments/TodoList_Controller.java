@@ -4,7 +4,7 @@
  */
 package ucf.assignments;
 
-
+//Set up imports
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -24,6 +24,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class TodoList_Controller implements Initializable {
+    //Initialize TableView and all its columns
     @FXML
     private TableView<Todo_Item> tableView;
     @FXML
@@ -35,8 +36,7 @@ public class TodoList_Controller implements Initializable {
     @FXML
     private TableColumn<Todo_Item, String> status;
 
-    //Initialize Empty List<Todo_list>
-
+    //Initialize three text field and datePicker for adding a new item
     @FXML
     private TextField titleTextField;
     @FXML
@@ -46,6 +46,7 @@ public class TodoList_Controller implements Initializable {
     @FXML
     private TextField statusTextField;
 
+    //Initialize Observable Todo list
     public ObservableList<Todo_Item> item_list = FXCollections.observableArrayList();
 
     //Initialize file chooser
@@ -67,19 +68,6 @@ public class TodoList_Controller implements Initializable {
         date.setCellFactory(TextFieldTableCell.forTableColumn());
         status.setCellFactory(TextFieldTableCell.forTableColumn());
 
-    }
-
-    public void FilePrint(File file, List<Todo_Item> list) {
-        //Use print writer to print list data to our new file
-        //Close file
-    }
-
-
-    public void ParseData(File file) {
-        //Takes in a file, preferably a text file
-        //Initialize a scanner
-        //Scan line by line and scan for list and items within a list
-        //Store these list and/or items in our already existing List of lists
     }
 
     @FXML
@@ -173,6 +161,9 @@ public class TodoList_Controller implements Initializable {
         //Initialize a file to be saved
         //Get all our items from current list to be saved
         //Call FilePrint() function
+
+        ExcelExport<Todo_Item> exporter = new ExcelExport<>();
+        exporter.export(tableView);
     }
 
 
