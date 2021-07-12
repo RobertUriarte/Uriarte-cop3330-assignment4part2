@@ -24,7 +24,7 @@
       <ToolBar prefHeight="40.0" prefWidth="600.0">
         <items>
             <Button mnemonicParsing="false" onAction="#SaveButtonClicked" text="Save" />
-            <Button mnemonicParsing="false" text="Load" />
+            <Button mnemonicParsing="false" onAction="#LoadButtonClicked" text="Load" />
             <MenuButton mnemonicParsing="false" text="Display">
               <items>
                 <MenuItem mnemonicParsing="false" onAction="#DisplayAllButtonClicked" text="All" />

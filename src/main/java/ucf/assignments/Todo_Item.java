@@ -8,6 +8,7 @@ package ucf.assignments;
 import javafx.beans.property.SimpleStringProperty;
 
 
+
 public class Todo_Item {
     //Set name
     //Set description

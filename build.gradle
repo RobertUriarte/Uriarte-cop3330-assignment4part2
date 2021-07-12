@@ -9,14 +9,20 @@ version '1.0-SNAPSHOT'
 
 repositories {
     mavenCentral()
+    jcenter()
 }
 
 dependencies {
+    implementation 'junit:junit:4.13.1'
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
     implementation 'org.apache.poi:poi:3.12'
     implementation 'org.apache.poi:poi-ooxml:3.12'
     implementation 'com.fasterxml:aalto-xml:1.0.0'
+    implementation 'com.google.code.gson:gson:2.8.7'
+
+    testImplementation "org.testfx:testfx-core:4.0.16-alpha"
+
 }
 
 test {

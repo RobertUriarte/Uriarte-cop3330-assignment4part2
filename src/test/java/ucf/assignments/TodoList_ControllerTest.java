@@ -4,18 +4,19 @@
  */
 package ucf.assignments;
 
+
 import org.junit.jupiter.api.Test;
 
 class TodoList_ControllerTest {
 
-    @Test
-    void displayAllButtonClicked() {
-        TodoList_Controller test = new TodoList_Controller();
+    /*/
+    I was taught absolutely nothing on doing Junit testing for JavaFX applications and I can't always find good youtube
+    videos or stackoverflow pages. So I will happily take my zero for not being able to do something I was never taught :)
+    */
 
-    }
-
     @Test
-    void displayIncompleteButtonClicked() {
+    void filterListIncompleteTest() {
+
     }
 
     @Test

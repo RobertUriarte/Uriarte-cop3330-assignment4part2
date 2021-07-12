@@ -21,28 +21,28 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
-public class TodoList_Controller implements Initializable {
+public class TodoList_Controller implements Initializable  {
     //Initialize TableView and all its columns
     @FXML
-    private TableView<Todo_Item> tableView;
+    public TableView<Todo_Item> tableView;
     @FXML
-    private TableColumn<Todo_Item, String> title;
+    public TableColumn<Todo_Item, String> title;
     @FXML
-    private TableColumn<Todo_Item, String> description;
+    public TableColumn<Todo_Item, String> description;
     @FXML
-    private TableColumn<Todo_Item, String> date;
+    public TableColumn<Todo_Item, String> date;
     @FXML
-    private TableColumn<Todo_Item, String> status;
+    public TableColumn<Todo_Item, String> status;
 
     //Initialize three text field and datePicker for adding a new item
     @FXML
-    private TextField titleTextField;
+    public TextField titleTextField;
     @FXML
-    private TextField descriptionTextField;
+    public TextField descriptionTextField;
     @FXML
-    private DatePicker dateTextField;
+    public DatePicker dateTextField;
     @FXML
-    private TextField statusTextField;
+    public TextField statusTextField;
 
     //Initialize Observable Todo list
     public ObservableList<Todo_Item> item_list = FXCollections.observableArrayList();
@@ -74,11 +74,11 @@ public class TodoList_Controller implements Initializable {
     }
 
     @FXML
-    public TableView<Todo_Item> DisplayAllButtonClicked(ActionEvent actionEvent) {
+    public void DisplayAllButtonClicked(ActionEvent actionEvent) {
         //Set the tableview to display all items in the List of items of current List
         tableView.setItems(item_list);
-        return tableView;
     }
+
 
     @FXML
     public void DisplayIncompleteButtonClicked(ActionEvent actionEvent) {
@@ -86,11 +86,17 @@ public class TodoList_Controller implements Initializable {
         //set predicates for incomplete list
         //Set the tableview values to the newly created Incomplete items list
 
-        FilteredList<Todo_Item> items = new FilteredList<>(item_list,b -> true);
+        FilteredList<Todo_Item> items = filterListIncomplete(item_list);
+        tableView.setItems(items);
+    }
+
+    @FXML
+    public FilteredList<Todo_Item> filterListIncomplete(ObservableList<Todo_Item> item_lists){
+        FilteredList<Todo_Item> items = new FilteredList<>(item_lists,b -> true);
         items.setPredicate(Todo_Item -> {
             return Todo_Item.getStatus().equals("I") || Todo_Item.getStatus().equals("i");
         });
-        tableView.setItems(items);
+        return items;
     }
 
     @FXML
